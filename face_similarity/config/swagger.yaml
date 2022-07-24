@@ -1,0 +1,100 @@
+swagger: '2.0'
+
+info:
+  version: 0.2.1
+  title: Face Similarity API
+  description: "Process image to obtain 128 vector dimensions and calculate
+    distance. he distance represents the similarity between both faces"
+  contact:
+    email: frankjony17@gmail.com
+
+schemes:
+  - http
+
+tags:
+  - name: Face Similarity
+    description: "Similarity between both faces"
+
+paths:
+  /image/face-distance:
+    post:
+      tags:
+        - Face Similarity
+      description: 'Route that receives a POST request and returns the distance between both faces (1 x 1).'
+      parameters:
+        - name: face_compare
+          in: body
+          required: true
+          description: 'Base64 encoded image (must contain the face of a person).'
+          schema:
+            $ref: '#/definitions/face_compare'
+      responses:
+        '200':
+          description: 'Successful execution'
+          schema:
+            $ref: '#/definitions/Response200'
+        '400':
+          description: 'Bad Request, wrong syntax'
+          schema:
+            $ref: '#/definitions/Error400'
+        '400-1':
+          description: 'Bad Request, wrong base64'
+          schema:
+            $ref: '#/definitions/Error400-1'
+        '400-4':
+          description: 'Bad Request, miss params'
+          schema:
+            $ref: '#/definitions/Error400-4'
+
+definitions:
+  face_compare:
+    type: object
+    required:
+      - img1
+      - img2
+    properties:
+      img1:
+        type: string
+        example: 'ZXhhbXBsZQ=='
+      img2:
+        type: string
+        example: 'ZXhhbXBsZQ=='
+
+  Response200:
+    type: object
+    properties:
+      similarity:
+        type: Float
+        example: '97.5'
+
+  Error400:
+    type: object
+    properties:
+      message:
+        type: string
+        example: 'Bad Request, wrong syntax'
+      details:
+        type: string
+        example: 'The request could not be understood by the server due to
+        malformed syntax. The client SHOULD NOT repeat the request without
+        modifications.'
+
+  Error400-1:
+    type: object
+    properties:
+      message:
+        type: string
+        example: 'Bad Request, wrong base64'
+      details:
+        type: string
+        example: 'Wrong base64 format.'
+
+  Error400-4:
+    type: object
+    properties:
+      message:
+        type: string
+        example: 'Bad Request, required parameters missing'
+      details:
+        type: string
+        example: "Required parameters wasn't found."

@@ -1,0 +1,5 @@
+[flake8]
+exclude = .git,__pycache__, face_similarity, scripts, statics, tests, utils, venv, setup.py, locustfile.py, config.py
+max-line-length = 140
+
+
